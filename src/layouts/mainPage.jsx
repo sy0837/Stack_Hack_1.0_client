@@ -2,7 +2,6 @@ import React from 'react'
 import List from '../components/lists'
 
 import {
-    Hidden,
     Container
 } from '@material-ui/core'
 

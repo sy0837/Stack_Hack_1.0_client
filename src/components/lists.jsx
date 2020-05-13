@@ -21,7 +21,7 @@ export default (props) => {
                 <Grid container>
                     {props.items.map(item => {
                         return (
-                            <Grid container>
+                            <Grid container key={item}>
                                 <Grid item sm={3}>
                                     Item
                                 </Grid>
