@@ -1,8 +1,4 @@
 import React from 'react'
-import {
-    Container,
-    Grid
-} from '@material-ui/core'
 
 
 export default (props) => {
@@ -10,7 +6,7 @@ export default (props) => {
     return (
         <div>
             {props.todos.map(todo=> (
-                <div>
+                <div key={todo.id}>
                     {todo.title}
                 </div>
             ))}
