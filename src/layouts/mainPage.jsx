@@ -5,60 +5,87 @@ import Todolist from '../components/todolist'
 
 import {
     Container,
-    Grid
+    Grid,
+    Button
 } from '@material-ui/core'
 
 class MainPage extends React.Component {
-    constructor(){
+    constructor() {
         super()
         this.state = {
             todos: [],
-            lists: []
-        } 
+            lists: [],
+            listInput: ""
+        }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         Axios({
             method: 'GET',
             url: 'https://candle-shiny-indigo.glitch.me/todo/lists'
-        }).then(res=> {
+        }).then(res => {
             this.setState({
                 lists: res.data
             })
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err)
         })
 
         Axios({
             method: 'GET',
             url: 'https://candle-shiny-indigo.glitch.me/todo/todos'
-        }).then(res=>{
+        }).then(res => {
             console.log(res.data)
             this.setState({
                 todos: res.data
             })
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err)
         })
     }
 
+    listInputHandler(event) {
+        this.setState({
+            listInput: event.target.value
+        })
+    }
 
-    render(){
+    addToList() {
+        let newList = this.state.lists
+        newList.push({
+            list_name: this.state.listInput,
+            _id: 1
+        })
+        console.log(newList)
+        this.setState({
+            lists: newList,
+            listInput: ""
+        })
+    }
+
+
+    render() {
         return (
             <div>
                 <Container>
                     <Grid container>
 
                         <Grid item sm={3}>
-                        <List items={this.state.lists} />
-                        </Grid> 
+                            <List items={this.state.lists} />
+                            <input type="text" value={this.state.listInput} onChange={(event) => { this.listInputHandler(event) }} />
+                            <Button onClick={() => { this.addToList() }}>
+                                <h3>+</h3>
+                            </Button>
+                        </Grid>
                         <Grid item sm={8}>
-                        <Todolist todos={this.state.todos}/>
+
+                            <Todolist todos={this.state.todos} />
+
                         </Grid>
 
                     </Grid>
-                    
-                    
+
+
                 </Container>
             </div>
         )
