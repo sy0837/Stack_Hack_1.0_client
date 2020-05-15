@@ -15,7 +15,8 @@ class MainPage extends React.Component {
         this.state = {
             todos: [],
             lists: [],
-            listInput: ""
+            listInput: "",
+            todoInput: ""
         }
     }
 
@@ -63,6 +64,25 @@ class MainPage extends React.Component {
         })
     }
 
+    todoInputHandler(event) {
+        this.setState({
+            todoInput: event.target.value
+        })
+    }
+
+    addToTodo() {
+        let newTodo = this.state.todos
+        newTodo.push({
+            name: this.state.todoInput,
+            _id: 1
+        })
+        console.log(newTodo)
+        this.setState({
+            todos: newTodo,
+            todoInput: ""
+        })
+    }
+
 
     render() {
         return (
@@ -80,6 +100,10 @@ class MainPage extends React.Component {
                         <Grid item sm={8}>
 
                             <Todolist todos={this.state.todos} />
+                            <input type="text" value={this.state.todoInput} onChange={(event) => { this.todoInputHandler(event) }} />
+                            <Button onClick={() => this.addToTodo()}>
+                                <h3>+</h3>
+                            </Button>
 
                         </Grid>
 
