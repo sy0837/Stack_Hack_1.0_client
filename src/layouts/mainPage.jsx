@@ -12,15 +12,28 @@ class MainPage extends React.Component {
     constructor(){
         super()
         this.state = {
-            todos: []
+            todos: [],
+            lists: []
         } 
     }
 
     componentDidMount(){
         Axios({
             method: 'GET',
-            url: 'https://jsonplaceholder.typicode.com/todos'
+            url: 'https://candle-shiny-indigo.glitch.me/todo/lists'
+        }).then(res=> {
+            this.setState({
+                lists: res.data
+            })
+        }).catch(err=>{
+            console.log(err)
+        })
+
+        Axios({
+            method: 'GET',
+            url: 'https://candle-shiny-indigo.glitch.me/todo/todos'
         }).then(res=>{
+            console.log(res.data)
             this.setState({
                 todos: res.data
             })
@@ -37,7 +50,7 @@ class MainPage extends React.Component {
                     <Grid container>
 
                         <Grid item sm={3}>
-                        <List items={this.state.todos} />
+                        <List items={this.state.lists} />
                         </Grid> 
                         <Grid item sm={8}>
                         <Todolist todos={this.state.todos}/>
