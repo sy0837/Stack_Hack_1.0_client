@@ -92,13 +92,13 @@ class MainPage extends React.Component {
                     <Grid item sm={4}>
                         <List items={this.state.lists} />
                         <Hidden smDown>
-                            <Input />
+                            <Input title="add list" />
                         </Hidden>
                     </Grid>
                     <Grid item sm={8}>
                         <Todolist todos={this.state.todos} />
 
-                        <Input />
+                        <Input title="add todo" />
                     </Grid>
                 </PadBox>
 

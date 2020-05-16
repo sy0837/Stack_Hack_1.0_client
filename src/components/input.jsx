@@ -4,8 +4,11 @@ import {
     TextField,
     FormControl,
     Grid,
-    Button
+    Fab
 } from '@material-ui/core'
+import {
+    Add
+} from '@material-ui/icons'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -17,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default () => {
+export default (props) => {
     const classes = useStyles()
 
     return (
@@ -25,18 +28,17 @@ export default () => {
             <Grid container spacing={2}>
                 <Grid item xs={10}>
                     <FormControl fullWidth noValidate autoComplete="off" >
-                        <TextField id="standard-basic" label="Add Todo" />
+                        <TextField id="standard-basic" label={props.title} />
                     </FormControl>
                 </Grid>
 
                 <Grid item xs={1}>
-                    <Button 
-                    color="secondary" 
-                    className={classes.button}
-                    variant="outlined"
-                    >
-                        Add
-                    </Button>
+                    <Fab
+                        className={classes.button}
+                        size="small"
+                        color="secondary">
+                        <Add />
+                    </Fab>
                 </Grid>
 
             </Grid>
