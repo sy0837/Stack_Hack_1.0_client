@@ -2,11 +2,12 @@ import React from 'react'
 import List from '../components/lists'
 import Axios from 'axios'
 import Todolist from '../components/todolist'
+import PadBox from '../components/todobox'
+import Input from '../components/input'
 
 import {
-    Container,
     Grid,
-    Button
+    Hidden
 } from '@material-ui/core'
 
 class MainPage extends React.Component {
@@ -87,30 +88,30 @@ class MainPage extends React.Component {
     render() {
         return (
             <div>
-                <Container>
-                    <Grid container>
-
-                        <Grid item sm={3}>
-                            <List items={this.state.lists} />
-                            <input type="text" value={this.state.listInput} onChange={(event) => { this.listInputHandler(event) }} />
-                            <Button onClick={() => { this.addToList() }}>
-                                <h3>+</h3>
-                            </Button>
-                        </Grid>
-                        <Grid item sm={8}>
-
-                            <Todolist todos={this.state.todos} />
-                            <input type="text" value={this.state.todoInput} onChange={(event) => { this.todoInputHandler(event) }} />
-                            <Button onClick={() => this.addToTodo()}>
-                                <h3>+</h3>
-                            </Button>
-
-                        </Grid>
-
+                <PadBox>
+                    <Grid item sm={4}>
+                        <List items={this.state.lists} />
+                        <Hidden xsDown>
+                            <Input
+                                title="add list"
+                                value={this.state.listInput}
+                                handler={(event) => { this.listInputHandler(event) }}
+                                btn={() => { this.addToList() }}
+                            />
+                        </Hidden>
                     </Grid>
+                    <Grid item sm={8}>
+                        <Todolist todos={this.state.todos} />
 
+                        <Input
+                            title="add todo"
+                            value={this.state.todoInput}
+                            handler={(event) => { this.todoInputHandler(event) }}
+                            btn={() => { this.addToTodo() }}
+                        />
+                    </Grid>
+                </PadBox>
 
-                </Container>
             </div>
         )
     }

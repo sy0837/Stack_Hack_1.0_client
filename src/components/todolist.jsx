@@ -1,7 +1,8 @@
 import React from 'react'
 import {
-    Container,
-    makeStyles
+    makeStyles,
+    Paper,
+    Typography
 } from '@material-ui/core'
 
 const useStyle = makeStyles(theme => ({
@@ -9,7 +10,10 @@ const useStyle = makeStyles(theme => ({
         padding: theme.spacing(2)
     },
     main: {
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(1),
+    },
+    border: {
+        padding: '8px'
     }
 }))
 
@@ -17,13 +21,15 @@ export default (props) => {
     const classes = useStyle()
     return (
         <div className={classes.main}>
-            {props.todos.map(todo => (
-                <div key={todo._id} className={classes.root} >
-                    <Container>
-                        {todo.name}
-                    </Container>
-                </div>
-            ))}
+            <Paper variant="outlined" >
+                {props.todos.map(todo => (
+                    <div key={todo._id} className={classes.root} >
+                        <Typography>
+                            {todo.name}
+                        </Typography>
+                    </div>
+                ))}
+            </Paper>
         </div>
     )
 }
