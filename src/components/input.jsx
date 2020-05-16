@@ -28,7 +28,12 @@ export default (props) => {
             <Grid container spacing={2}>
                 <Grid item xs={10}>
                     <FormControl fullWidth noValidate autoComplete="off" >
-                        <TextField id="standard-basic" label={props.title} />
+                        <TextField
+                            value={props.value}
+                            onChange={props.handler}
+                            id="standard-basic"
+                            label={props.title}
+                        />
                     </FormControl>
                 </Grid>
 
@@ -36,7 +41,9 @@ export default (props) => {
                     <Fab
                         className={classes.button}
                         size="small"
-                        color="secondary">
+                        color="secondary"
+                        onClick={props.btn}
+                    >
                         <Add />
                     </Fab>
                 </Grid>

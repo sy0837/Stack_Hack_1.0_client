@@ -91,14 +91,24 @@ class MainPage extends React.Component {
                 <PadBox>
                     <Grid item sm={4}>
                         <List items={this.state.lists} />
-                        <Hidden smDown>
-                            <Input title="add list" />
+                        <Hidden xsDown>
+                            <Input
+                                title="add list"
+                                value={this.state.listInput}
+                                handler={(event) => { this.listInputHandler(event) }}
+                                btn={() => { this.addToList() }}
+                            />
                         </Hidden>
                     </Grid>
                     <Grid item sm={8}>
                         <Todolist todos={this.state.todos} />
 
-                        <Input title="add todo" />
+                        <Input
+                            title="add todo"
+                            value={this.state.todoInput}
+                            handler={(event) => { this.todoInputHandler(event) }}
+                            btn={() => { this.addToTodo() }}
+                        />
                     </Grid>
                 </PadBox>
 
