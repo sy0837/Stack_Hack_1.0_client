@@ -4,6 +4,7 @@ import Axios from 'axios'
 import Todolist from '../components/todolist'
 import PadBox from '../components/todobox'
 import Input from '../components/input'
+import Loading from '../components/loading'
 
 import {
     Grid,
@@ -17,7 +18,9 @@ class MainPage extends React.Component {
             todos: [],
             lists: [],
             listInput: "",
-            todoInput: ""
+            todoInput: "",
+            isLoading: false,
+            currentList: ''
         }
     }
 
@@ -53,16 +56,37 @@ class MainPage extends React.Component {
     }
 
     addToList() {
+        this.backDropOpen()
         let newList = this.state.lists
-        newList.push({
-            list_name: this.state.listInput,
-            _id: 1
+        if (this.state.listInput.trim() === '') {
+            this.setState({
+                isLoading: false
+            })
+            return;
+        }
+        Axios({
+            method: 'POST',
+            url: 'https://candle-shiny-indigo.glitch.me/todo/lists',
+            data: {
+                listName: this.state.listInput.trim()
+            }
+        }).then(res => {
+            newList.push(res.data)
+            console.log(newList)
+            this.setState({
+                lists: newList,
+                listInput: "",
+                isLoading: false
+            })
+
+
+        }).catch(err => {
+            console.log(err)
+            this.setState({
+                isLoading: false
+            })
         })
-        console.log(newList)
-        this.setState({
-            lists: newList,
-            listInput: ""
-        })
+
     }
 
     todoInputHandler(event) {
@@ -73,6 +97,9 @@ class MainPage extends React.Component {
 
     addToTodo() {
         let newTodo = this.state.todos
+        if (this.state.todoInput.trim() === '') {
+            return
+        }
         newTodo.push({
             name: this.state.todoInput,
             _id: 1
@@ -84,10 +111,25 @@ class MainPage extends React.Component {
         })
     }
 
+    backDropClose() {
+        this.setState({
+            isLoding: false
+        })
+    }
+
+    backDropOpen() {
+        this.setState({
+            isLoading: true
+        })
+    }
+
 
     render() {
         return (
             <div>
+                <Loading
+                    value={this.state.isLoading}
+                />
                 <PadBox>
                     <Grid item sm={4}>
                         <List items={this.state.lists} />
