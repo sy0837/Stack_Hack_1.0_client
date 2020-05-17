@@ -92,8 +92,7 @@ class MainPage extends React.Component {
 
     createTodo() {
         this.backDropOpen()
-        const { currentListIndex, todoInput } = this.state
-        if (todoInput.trim() === '') {
+        if (this.state.todoInput.trim() === '') {
             this.setState({
                 isLoading: false
             })
@@ -131,22 +130,6 @@ class MainPage extends React.Component {
     todoInputHandler(event) {
         this.setState({
             todoInput: event.target.value
-        })
-    }
-
-    addToTodo() {
-        let newTodo = this.state.todos
-        if (this.state.todoInput.trim() === '') {
-            return
-        }
-        newTodo.push({
-            name: this.state.todoInput,
-            _id: 1
-        })
-        console.log(newTodo)
-        this.setState({
-            todos: newTodo,
-            todoInput: ""
         })
     }
 
