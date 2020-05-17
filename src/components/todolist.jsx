@@ -22,13 +22,17 @@ export default (props) => {
     return (
         <div className={classes.main}>
             <Paper variant="outlined" >
-                {props.todos.map(todo => (
-                    <div key={todo._id} className={classes.root} >
-                        <Typography>
-                            {todo.name}
-                        </Typography>
-                    </div>
-                ))}
+                {props.todos.map(todo => {
+                    if (props.listId === todo.list_id) {
+                        return (
+                            <div key={todo._id} className={classes.root} >
+                                <Typography>
+                                    {todo.name}
+                                </Typography>
+                            </div>
+                        )
+                    }
+                })}
             </Paper>
         </div>
     )

@@ -27,24 +27,24 @@ export default (props) => {
     return (
         <div id="lists" className={classes.root}>
             <Paper variant="outlined">
-            <Hidden xsDown>
-                <Grid container>
-                    {props.items.map(item => {
-                        return (
-                            <Grid container key={item._id}>
-                                <Grid item sm={3} className={classes.main}>
-                                    <Typography 
-                                    className={(item._id === props.selectedItem) ? classes.selected: null}
-                                    
-                                    >
-                                    {item.list_name}
-                                    </Typography>
+                <Hidden xsDown>
+                    <Grid container>
+                        {props.items.map(item => {
+                            return (
+                                <Grid container key={item._id}>
+                                    <Grid item sm={3} className={classes.main}>
+                                        <Typography
+                                            className={(item._id === props.selectedItem) ? classes.selected : null}
+                                            onClick={() => { props.selectedItemHandler(item._id) }}
+                                        >
+                                            {item.list_name}
+                                        </Typography>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        )
-                    })}
-                </Grid>
-            </Hidden>
+                            )
+                        })}
+                    </Grid>
+                </Hidden>
             </Paper>
         </div>
     )
