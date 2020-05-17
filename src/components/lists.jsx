@@ -12,7 +12,11 @@ const userStyle = makeStyles(theme => ({
         marginTop: theme.spacing(1)
     },
     main: {
-        padding: theme.spacing(1)
+        padding: theme.spacing(1),
+        cursor: 'pointer'
+    },
+    selected: {
+        color: 'red'
     }
 }))
 
@@ -29,7 +33,10 @@ export default (props) => {
                         return (
                             <Grid container key={item._id}>
                                 <Grid item sm={3} className={classes.main}>
-                                    <Typography>
+                                    <Typography 
+                                    className={(item._id === props.selectedItem) ? classes.selected: null}
+                                    
+                                    >
                                     {item.list_name}
                                     </Typography>
                                 </Grid>

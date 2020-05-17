@@ -20,7 +20,7 @@ class MainPage extends React.Component {
             listInput: "",
             todoInput: "",
             isLoading: false,
-            currentList: ''
+            currentListIndex: 0
         }
     }
 
@@ -30,7 +30,8 @@ class MainPage extends React.Component {
             url: 'https://candle-shiny-indigo.glitch.me/todo/lists'
         }).then(res => {
             this.setState({
-                lists: res.data
+                lists: res.data,
+                currentListIndex: res.data[0]._id
             })
         }).catch(err => {
             console.log(err)
@@ -123,6 +124,13 @@ class MainPage extends React.Component {
         })
     }
 
+    changeSelectedListItem(event){
+        console.log(event)
+        this.setState({
+            currentListIndex: event.target.selectedItem
+        })
+    }
+
 
     render() {
         return (
@@ -132,7 +140,10 @@ class MainPage extends React.Component {
                 />
                 <PadBox>
                     <Grid item sm={4}>
-                        <List items={this.state.lists} />
+                        <List 
+                        items={this.state.lists}
+                        selectedItem = {this.state.currentListIndex}
+                        />
                         <Hidden xsDown>
                             <Input
                                 title="add list"
