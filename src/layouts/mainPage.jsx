@@ -54,6 +54,9 @@ class MainPage extends React.Component {
 
     addToList() {
         let newList = this.state.lists
+        if(this.state.listInput.trim() === ''){
+            return;
+        }
         newList.push({
             list_name: this.state.listInput,
             _id: 1
@@ -73,6 +76,9 @@ class MainPage extends React.Component {
 
     addToTodo() {
         let newTodo = this.state.todos
+        if(this.state.todoInput.trim() === ''){
+            return
+        }
         newTodo.push({
             name: this.state.todoInput,
             _id: 1
