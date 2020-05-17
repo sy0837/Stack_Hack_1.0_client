@@ -20,7 +20,7 @@ class MainPage extends React.Component {
             listInput: "",
             todoInput: "",
             isLoading: false,
-            currentListIndex: 0
+            currentListIndex: null
         }
     }
 
@@ -90,6 +90,44 @@ class MainPage extends React.Component {
 
     }
 
+    createTodo() {
+        this.backDropOpen()
+        const { currentListIndex, todoInput } = this.state
+        if (todoInput.trim() === '') {
+            this.setState({
+                isLoading: false
+            })
+            return
+        }
+
+        Axios({
+            method: 'POST',
+            url: 'https://candle-shiny-indigo.glitch.me/todo/todos',
+            data: {
+                listId: this.state.currentListIndex,
+                name: this.state.todoInput.trim()
+            }
+        }).then(response => {
+            return Axios({
+                method: 'GET',
+                url: 'https://candle-shiny-indigo.glitch.me/todo/todos'
+            })
+        }).then(res => {
+            this.setState({
+                todos: res.data,
+                isLoading: false,
+                todoInput: ''
+            })
+
+        }).catch(err => {
+            console.log(err)
+            this.setState({
+                isLoading: false
+            })
+        })
+
+    }
+
     todoInputHandler(event) {
         this.setState({
             todoInput: event.target.value
@@ -124,10 +162,10 @@ class MainPage extends React.Component {
         })
     }
 
-    changeSelectedListItem(event){
-        console.log(event)
+    changeSelectedListItem(id) {
+        console.log(id)
         this.setState({
-            currentListIndex: event.target.selectedItem
+            currentListIndex: id
         })
     }
 
@@ -140,9 +178,10 @@ class MainPage extends React.Component {
                 />
                 <PadBox>
                     <Grid item sm={4}>
-                        <List 
-                        items={this.state.lists}
-                        selectedItem = {this.state.currentListIndex}
+                        <List
+                            items={this.state.lists}
+                            selectedItem={this.state.currentListIndex}
+                            selectedItemHandler={(id) => { this.changeSelectedListItem(id) }}
                         />
                         <Hidden xsDown>
                             <Input
@@ -154,13 +193,16 @@ class MainPage extends React.Component {
                         </Hidden>
                     </Grid>
                     <Grid item sm={8}>
-                        <Todolist todos={this.state.todos} />
+                        <Todolist
+                            todos={this.state.todos}
+                            listId={this.state.currentListIndex}
+                        />
 
                         <Input
                             title="add todo"
                             value={this.state.todoInput}
                             handler={(event) => { this.todoInputHandler(event) }}
-                            btn={() => { this.addToTodo() }}
+                            btn={() => { this.createTodo() }}
                         />
                     </Grid>
                 </PadBox>
