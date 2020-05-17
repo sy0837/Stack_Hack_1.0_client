@@ -8,8 +8,7 @@ import Loading from '../components/loading'
 
 import {
     Grid,
-    Hidden,
-    Backdrop
+    Hidden
 } from '@material-ui/core'
 
 class MainPage extends React.Component {
