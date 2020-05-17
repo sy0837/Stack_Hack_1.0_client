@@ -4,10 +4,12 @@ import Axios from 'axios'
 import Todolist from '../components/todolist'
 import PadBox from '../components/todobox'
 import Input from '../components/input'
+import Loading from '../components/loading'
 
 import {
     Grid,
-    Hidden
+    Hidden,
+    Backdrop
 } from '@material-ui/core'
 
 class MainPage extends React.Component {
@@ -17,7 +19,9 @@ class MainPage extends React.Component {
             todos: [],
             lists: [],
             listInput: "",
-            todoInput: ""
+            todoInput: "",
+            isLoading: false,
+            currentList: ''
         }
     }
 
@@ -53,19 +57,37 @@ class MainPage extends React.Component {
     }
 
     addToList() {
+        this.backDropOpen()
         let newList = this.state.lists
-        if(this.state.listInput.trim() === ''){
+        if (this.state.listInput.trim() === '') {
+            this.setState({
+                isLoading: false
+            })
             return;
         }
-        newList.push({
-            list_name: this.state.listInput,
-            _id: 1
+        Axios({
+            method: 'POST',
+            url: 'https://candle-shiny-indigo.glitch.me/todo/lists',
+            data: {
+                listName: this.state.listInput.trim()
+            }
+        }).then(res => {
+            newList.push(res.data)
+            console.log(newList)
+            this.setState({
+                lists: newList,
+                listInput: "",
+                isLoading: false
+            })
+
+
+        }).catch(err => {
+            console.log(err)
+            this.setState({
+                isLoading: false
+            })
         })
-        console.log(newList)
-        this.setState({
-            lists: newList,
-            listInput: ""
-        })
+
     }
 
     todoInputHandler(event) {
@@ -75,8 +97,9 @@ class MainPage extends React.Component {
     }
 
     addToTodo() {
+        this.backDropOpen()
         let newTodo = this.state.todos
-        if(this.state.todoInput.trim() === ''){
+        if (this.state.todoInput.trim() === '') {
             return
         }
         newTodo.push({
@@ -88,12 +111,28 @@ class MainPage extends React.Component {
             todos: newTodo,
             todoInput: ""
         })
+        this.backDropClose()
+    }
+
+    backDropClose() {
+        this.setState({
+            isLoding: false
+        })
+    }
+
+    backDropOpen() {
+        this.setState({
+            isLoading: true
+        })
     }
 
 
     render() {
         return (
             <div>
+                <Loading
+                    value={this.state.isLoading}
+                />
                 <PadBox>
                     <Grid item sm={4}>
                         <List items={this.state.lists} />
