@@ -96,7 +96,6 @@ class MainPage extends React.Component {
     }
 
     addToTodo() {
-        this.backDropOpen()
         let newTodo = this.state.todos
         if (this.state.todoInput.trim() === '') {
             return
@@ -110,7 +109,6 @@ class MainPage extends React.Component {
             todos: newTodo,
             todoInput: ""
         })
-        this.backDropClose()
     }
 
     backDropClose() {
