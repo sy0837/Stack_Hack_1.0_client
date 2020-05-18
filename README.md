@@ -32,13 +32,11 @@
   <td><a href="https://github.com/Souvikns"><img width=70 height=70 src="https://avatars3.githubusercontent.com/u/41781438?s=460&u=00c443438c07ac2ffaef48bef755067522abc4bc&v=4"></a></td>
   <td><a href="https://github.com/imabp"><img width=70 height=70 src="https://avatars3.githubusercontent.com/u/53480076?s=460&u=182022968da3f6f03777d264eef4a999dd689379&v=4"></a></td>
   <td><a href="https://github.com/sy0837"><img width=70 height=70 src="https://avatars1.githubusercontent.com/u/50517233?s=460&u=9023c2c0a030cd17f034daa5cf9452f5650c5cb5&v=4"></a></td>
-  <td><a href="https://github.com/Anoushka03"><img width=70 height=70 src="https://avatars0.githubusercontent.com/u/41802207?s=460&v=4"></a></td>
  </tr>
  <tr>
   <td><a href="https://github.com/Souvikns">Souvikns</a></td>
   <td><a href="https://github.com/imabp">imabp</a></td>
   <td><a href="https://github.com/sy0837">sy0837</a></td>
-  <td><a href="https://github.com/Anoushka03">Anoushka03</a></td>
  </tr>
  </table>
 </p>
