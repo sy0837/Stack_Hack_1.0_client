@@ -1,8 +1,13 @@
 import {
     FETCH_TODOS,
     FETCH_LISTS,
-    UPDATE_LIST_INDEX
+    UPDATE_LIST_INDEX,
+    CREATE_TODO
 } from '../constants'
+
+import {
+    toggleLoading
+} from './ui'
 import Axios from 'axios'
 
 
@@ -26,6 +31,13 @@ const fetchLists = (data, listIndex) => {
 export const updateListIndex = (data) => {
     return {
         type: UPDATE_LIST_INDEX,
+        payload: data
+    }
+}
+
+const createTodo = (data) => {
+    return {
+        type: CREATE_TODO,
         payload: data
     }
 }
@@ -56,6 +68,34 @@ export const fetchListAsync = () => {
             dispatch(fetchLists(res.data, res.data[0]._id))
         }).catch(err => {
             dispatch(fetchLists(err))
+        })
+    }
+}
+
+export const createTodoAsync = (listId, name) => {
+    if (name === '') {
+        return dispatch => { }
+    }
+    return dispatch => {
+        dispatch(toggleLoading())
+        Axios({
+            method: 'POST',
+            url: 'https://candle-shiny-indigo.glitch.me/todo/todos',
+            data: {
+                listId: listId,
+                name: name
+            }
+        }).then(response => {
+            return Axios({
+                method: 'GET',
+                url: 'https://candle-shiny-indigo.glitch.me/todo/todos'
+            })
+        }).then(res => {
+            dispatch(fetchTodos(res.data))
+            dispatch(toggleLoading())
+        }).catch(err => {
+            dispatch(fetchTodos(err))
+            dispatch(toggleLoading())
         })
     }
 }

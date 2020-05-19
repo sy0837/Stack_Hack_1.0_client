@@ -18,7 +18,8 @@ import {
 import {
     fetchTodoAsync,
     fetchListAsync,
-    updateListIndex
+    updateListIndex,
+    createTodoAsync
 } from '../store/actions/main'
 
 class MainPage extends React.Component {
@@ -33,7 +34,7 @@ class MainPage extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchLists() 
+        this.props.fetchLists()
         this.props.fetchTodos()
     }
 
@@ -73,34 +74,13 @@ class MainPage extends React.Component {
     }
 
     createTodo() {
-        this.props.toggleLoading()
-        if (this.state.todoInput.trim() === '') {
-            this.props.toggleLoading()
-            return
-        }
+        // this.props.toggleLoading()
+        // if (this.state.todoInput.trim() === '') {
+        //     this.props.toggleLoading()
+        //     return
+        // }
 
-        Axios({
-            method: 'POST',
-            url: 'https://candle-shiny-indigo.glitch.me/todo/todos',
-            data: {
-                listId: this.state.currentListIndex,
-                name: this.state.todoInput.trim()
-            }
-        }).then(response => {
-            return Axios({
-                method: 'GET',
-                url: 'https://candle-shiny-indigo.glitch.me/todo/todos'
-            })
-        }).then(res => {
-            this.setState({
-                todos: res.data,
-                todoInput: ''
-            })
-            this.props.toggleLoading()
-        }).catch(err => {
-            console.log(err)
-            this.props.toggleLoading()
-        })
+        this.props.createTodo(this.props.listIndex, this.state.todoInput.trim())
 
     }
 
@@ -109,11 +89,6 @@ class MainPage extends React.Component {
             todoInput: event.target.value
         })
     }
-
-    changeSelectedListItem(id) {
-        this.props.updateListIndex(id)
-    }
-
 
     render() {
         return (
@@ -126,7 +101,7 @@ class MainPage extends React.Component {
                         <List
                             items={this.props.lists}
                             selectedItem={this.props.listIndex}
-                            selectedItemHandler={(id) => { this.changeSelectedListItem(id) }}
+                            selectedItemHandler={(id) => { this.props.updateListIndex(id) }}
                         />
                         <Hidden xsDown>
                             <Input
@@ -172,7 +147,8 @@ const mapDispatchToProps = dispatch => {
         toggleLoading: () => dispatch(toggleLoading()),
         fetchTodos: () => dispatch(fetchTodoAsync()),
         fetchLists: () => dispatch(fetchListAsync()),
-        updateListIndex: (id) => dispatch(updateListIndex(id))
+        updateListIndex: (id) => dispatch(updateListIndex(id)),
+        createTodo: (listId, name) => dispatch(createTodoAsync(listId, name))
     }
 }
 
