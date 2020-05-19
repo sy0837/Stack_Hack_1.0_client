@@ -2,7 +2,9 @@ import {
     FETCH_TODOS,
     FETCH_LISTS,
     UPDATE_LIST_INDEX,
-    CREATE_LIST
+    CREATE_LIST,
+    UPDATE_LIST_INPUT,
+    UPDATE_TODO_INPUT
 } from '../constants'
 
 const initialState = {
@@ -37,6 +39,18 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 lists: [...state.lists, action.payload]
+            }
+
+        case UPDATE_LIST_INPUT:
+            return {
+                ...state,
+                listInput: action.payload
+            }
+
+        case UPDATE_TODO_INPUT:
+            return {
+                ...state,
+                todoInput: action.payload
             }
         default:
             return state

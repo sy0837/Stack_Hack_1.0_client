@@ -19,7 +19,9 @@ import {
     fetchListAsync,
     updateListIndex,
     createTodoAsync,
-    createListAsync
+    createListAsync,
+    updateListInput,
+    updateTodoInput
 } from '../store/actions/main'
 
 class MainPage extends React.Component {
@@ -37,25 +39,21 @@ class MainPage extends React.Component {
     }
 
     listInputHandler(event) {
-        this.setState({
-            listInput: event.target.value
-        })
+        this.props.updateListInput(event.target.value)
     }
 
     addToList() {
-        this.props.createList(this.state.listInput.trim())
+        this.props.createList(this.props.listInput.trim())
     }
 
     createTodo() {
 
-        this.props.createTodo(this.props.listIndex, this.state.todoInput.trim())
+        this.props.createTodo(this.props.listIndex, this.props.todoInput.trim())
 
     }
 
     todoInputHandler(event) {
-        this.setState({
-            todoInput: event.target.value
-        })
+        this.props.updateTodoInput(event.target.value)
     }
 
     render() {
@@ -74,7 +72,7 @@ class MainPage extends React.Component {
                         <Hidden xsDown>
                             <Input
                                 title="add list"
-                                value={this.state.listInput}
+                                value={this.props.listInput}
                                 handler={(event) => { this.listInputHandler(event) }}
                                 btn={() => { this.addToList() }}
                             />
@@ -88,7 +86,7 @@ class MainPage extends React.Component {
 
                         <Input
                             title="add todo"
-                            value={this.state.todoInput}
+                            value={this.props.todoInput}
                             handler={(event) => { this.todoInputHandler(event) }}
                             btn={() => { this.createTodo() }}
                         />
@@ -105,7 +103,9 @@ const mapStateToProps = state => {
         isLoading: state.ui.is_loading,
         todos: state.main.todos,
         lists: state.main.lists,
-        listIndex: state.main.currentListIndex
+        listIndex: state.main.currentListIndex,
+        listInput: state.main.listInput,
+        todoInput: state.main.todoInput
     }
 }
 
@@ -117,7 +117,9 @@ const mapDispatchToProps = dispatch => {
         fetchLists: () => dispatch(fetchListAsync()),
         updateListIndex: (id) => dispatch(updateListIndex(id)),
         createTodo: (listId, name) => dispatch(createTodoAsync(listId, name)),
-        createList: (listName) => dispatch(createListAsync(listName))
+        createList: (listName) => dispatch(createListAsync(listName)),
+        updateListInput: (data) => dispatch(updateListInput(data)),
+        updateTodoInput: (data) => dispatch(updateTodoInput(data))
     }
 }
 

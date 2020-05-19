@@ -2,7 +2,9 @@ import {
     FETCH_TODOS,
     FETCH_LISTS,
     UPDATE_LIST_INDEX,
-    CREATE_LIST
+    CREATE_LIST,
+    UPDATE_LIST_INPUT,
+    UPDATE_TODO_INPUT
 } from '../constants'
 
 import {
@@ -42,6 +44,20 @@ const createList = (data) => {
     }
 }
 
+export const updateListInput = (data) => {
+    return {
+        type: UPDATE_LIST_INPUT,
+        payload: data
+    }
+}
+
+export const updateTodoInput = (data) => {
+    return {
+        type: UPDATE_TODO_INPUT,
+        payload: data
+    }
+}
+
 /**
  * Async functions 
  */
@@ -53,7 +69,7 @@ export const fetchTodoAsync = () => {
         }).then(res => {
             dispatch(fetchTodos(res.data))
         }).catch(err => {
-            dispatch(fetchTodos(err))
+            console.log(err)
         })
     }
 
@@ -67,7 +83,7 @@ export const fetchListAsync = () => {
         }).then(res => {
             dispatch(fetchLists(res.data, res.data[0]._id))
         }).catch(err => {
-            dispatch(fetchLists(err))
+            console.log(err)
         })
     }
 }
@@ -92,10 +108,10 @@ export const createTodoAsync = (listId, name) => {
             })
         }).then(res => {
             dispatch(fetchTodos(res.data))
+            dispatch(updateTodoInput(''))
             dispatch(toggleLoading())
         }).catch(err => {
-            dispatch(fetchTodos(err))
-            dispatch(toggleLoading())
+            console.log(err)
         })
     }
 }
@@ -114,6 +130,7 @@ export const createListAsync = (listName) => {
             }
         }).then(res => {
             dispatch(createList(res.data))
+            dispatch(updateListInput(''))
             dispatch(toggleLoading())
         }).catch(err => {
             console.log(err)
