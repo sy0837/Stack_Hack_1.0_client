@@ -1,6 +1,5 @@
 import React from 'react'
 import List from '../components/lists'
-import Axios from 'axios'
 import Todolist from '../components/todolist'
 import PadBox from '../components/todobox'
 import Input from '../components/input'
@@ -11,165 +10,69 @@ import {
     Hidden
 } from '@material-ui/core'
 
+import { connect } from 'react-redux'
+import {
+    toggleLoading
+} from '../store/actions/ui'
+import {
+    fetchTodoAsync,
+    fetchListAsync,
+    updateListIndex,
+    createTodoAsync,
+    createListAsync,
+    updateListInput,
+    updateTodoInput
+} from '../store/actions/main'
+
 class MainPage extends React.Component {
     constructor() {
         super()
         this.state = {
-            todos: [],
-            lists: [],
             listInput: "",
             todoInput: "",
-            isLoading: false,
-            currentListIndex: null
         }
     }
 
     componentDidMount() {
-        Axios({
-            method: 'GET',
-            url: 'https://candle-shiny-indigo.glitch.me/todo/lists'
-        }).then(res => {
-            this.setState({
-                lists: res.data,
-                currentListIndex: res.data[0]._id
-            })
-        }).catch(err => {
-            console.log(err)
-        })
-
-        Axios({
-            method: 'GET',
-            url: 'https://candle-shiny-indigo.glitch.me/todo/todos'
-        }).then(res => {
-            console.log(res.data)
-            this.setState({
-                todos: res.data
-            })
-        }).catch(err => {
-            console.log(err)
-        })
+        this.props.fetchLists()
+        this.props.fetchTodos()
     }
 
     listInputHandler(event) {
-        this.setState({
-            listInput: event.target.value
-        })
+        this.props.updateListInput(event.target.value)
     }
 
     addToList() {
-        this.backDropOpen()
-        let newList = this.state.lists
-        if (this.state.listInput.trim() === '') {
-            this.setState({
-                isLoading: false
-            })
-            return;
-        }
-        Axios({
-            method: 'POST',
-            url: 'https://candle-shiny-indigo.glitch.me/todo/lists',
-            data: {
-                listName: this.state.listInput.trim()
-            }
-        }).then(res => {
-            newList.push(res.data)
-            console.log(newList)
-            this.setState({
-                lists: newList,
-                listInput: "",
-                isLoading: false
-            })
-
-
-        }).catch(err => {
-            console.log(err)
-            this.setState({
-                isLoading: false
-            })
-        })
-
+        this.props.createList(this.props.listInput.trim())
     }
 
     createTodo() {
-        this.backDropOpen()
-        if (this.state.todoInput.trim() === '') {
-            this.setState({
-                isLoading: false
-            })
-            return
-        }
 
-        Axios({
-            method: 'POST',
-            url: 'https://candle-shiny-indigo.glitch.me/todo/todos',
-            data: {
-                listId: this.state.currentListIndex,
-                name: this.state.todoInput.trim()
-            }
-        }).then(response => {
-            return Axios({
-                method: 'GET',
-                url: 'https://candle-shiny-indigo.glitch.me/todo/todos'
-            })
-        }).then(res => {
-            this.setState({
-                todos: res.data,
-                isLoading: false,
-                todoInput: ''
-            })
-
-        }).catch(err => {
-            console.log(err)
-            this.setState({
-                isLoading: false
-            })
-        })
+        this.props.createTodo(this.props.listIndex, this.props.todoInput.trim())
 
     }
 
     todoInputHandler(event) {
-        this.setState({
-            todoInput: event.target.value
-        })
+        this.props.updateTodoInput(event.target.value)
     }
-
-    backDropClose() {
-        this.setState({
-            isLoding: false
-        })
-    }
-
-    backDropOpen() {
-        this.setState({
-            isLoading: true
-        })
-    }
-
-    changeSelectedListItem(id) {
-        console.log(id)
-        this.setState({
-            currentListIndex: id
-        })
-    }
-
 
     render() {
         return (
             <div>
                 <Loading
-                    value={this.state.isLoading}
+                    value={this.props.isLoading}
                 />
                 <PadBox>
                     <Grid item sm={4}>
                         <List
-                            items={this.state.lists}
-                            selectedItem={this.state.currentListIndex}
-                            selectedItemHandler={(id) => { this.changeSelectedListItem(id) }}
+                            items={this.props.lists}
+                            selectedItem={this.props.listIndex}
+                            selectedItemHandler={(id) => { this.props.updateListIndex(id) }}
                         />
                         <Hidden xsDown>
                             <Input
                                 title="add list"
-                                value={this.state.listInput}
+                                value={this.props.listInput}
                                 handler={(event) => { this.listInputHandler(event) }}
                                 btn={() => { this.addToList() }}
                             />
@@ -177,13 +80,13 @@ class MainPage extends React.Component {
                     </Grid>
                     <Grid item sm={8}>
                         <Todolist
-                            todos={this.state.todos}
-                            listId={this.state.currentListIndex}
+                            todos={this.props.todos}
+                            listId={this.props.listIndex}
                         />
 
                         <Input
                             title="add todo"
-                            value={this.state.todoInput}
+                            value={this.props.todoInput}
                             handler={(event) => { this.todoInputHandler(event) }}
                             btn={() => { this.createTodo() }}
                         />
@@ -195,4 +98,29 @@ class MainPage extends React.Component {
     }
 }
 
-export default MainPage
+const mapStateToProps = state => {
+    return {
+        isLoading: state.ui.is_loading,
+        todos: state.main.todos,
+        lists: state.main.lists,
+        listIndex: state.main.currentListIndex,
+        listInput: state.main.listInput,
+        todoInput: state.main.todoInput
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+
+    return {
+        toggleLoading: () => dispatch(toggleLoading()),
+        fetchTodos: () => dispatch(fetchTodoAsync()),
+        fetchLists: () => dispatch(fetchListAsync()),
+        updateListIndex: (id) => dispatch(updateListIndex(id)),
+        createTodo: (listId, name) => dispatch(createTodoAsync(listId, name)),
+        createList: (listName) => dispatch(createListAsync(listName)),
+        updateListInput: (data) => dispatch(updateListInput(data)),
+        updateTodoInput: (data) => dispatch(updateTodoInput(data))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage)
