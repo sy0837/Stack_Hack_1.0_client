@@ -9,14 +9,24 @@ import {
 
 const userStyle = makeStyles(theme => ({
     root: {
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(1),
+        // boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        
+        
     },
     main: {
         padding: theme.spacing(1),
-        cursor: 'pointer'
+        cursor: 'pointer',
+        background: '#',
+       
+        
     },
     selected: {
-        color: 'red'
+        padding : theme.spacing(2),
+        borderRadius : theme.spacing(5),
+        background: ' linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        color : "#fff",
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
     }
 }))
 
@@ -32,7 +42,7 @@ export default (props) => {
                         {props.items.map(item => {
                             return (
                                 <Grid container key={item._id}>
-                                    <Grid item sm={3} className={classes.main}>
+                                    <Grid item sm={5} className={classes.main}>
                                         <Typography
                                             className={(item._id === props.selectedItem) ? classes.selected : null}
                                             onClick={() => { props.selectedItemHandler(item._id) }}

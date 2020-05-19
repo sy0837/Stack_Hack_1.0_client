@@ -13,11 +13,19 @@ import {
 const useStyles = makeStyles(theme => ({
     root: {
         padding: `${theme.spacing(2)} ${theme.spacing(1)}`,
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(1),
+        
     },
     button: {
-        marginTop: theme.spacing(2)
-    }
+        marginTop: theme.spacing(2),
+        background: ' #FE6B8B',
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        
+    },
+    // input:focus :{
+
+    // },
+   
 }))
 
 export default (props) => {
