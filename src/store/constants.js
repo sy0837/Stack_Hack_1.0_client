@@ -8,3 +8,5 @@
   * we need to use redux-thunk and also create 
   * action creators inside that will return a action. 
   */
+
+export const LOADING_TOGGLE = "LOADDING_TOGGLE"

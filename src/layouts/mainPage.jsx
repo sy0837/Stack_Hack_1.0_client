@@ -11,6 +11,11 @@ import {
     Hidden
 } from '@material-ui/core'
 
+import { connect } from 'react-redux'
+import {
+    toggleLoading
+} from '../store/actions/ui'
+
 class MainPage extends React.Component {
     constructor() {
         super()
@@ -57,12 +62,10 @@ class MainPage extends React.Component {
     }
 
     addToList() {
-        this.backDropOpen()
+        this.props.toggleLoading()
         let newList = this.state.lists
         if (this.state.listInput.trim() === '') {
-            this.setState({
-                isLoading: false
-            })
+            this.props.toggleLoading()
             return;
         }
         Axios({
@@ -76,26 +79,21 @@ class MainPage extends React.Component {
             console.log(newList)
             this.setState({
                 lists: newList,
-                listInput: "",
-                isLoading: false
+                listInput: ""
             })
-
+            this.props.toggleLoading()
 
         }).catch(err => {
             console.log(err)
-            this.setState({
-                isLoading: false
-            })
+            this.props.toggleLoading()
         })
 
     }
 
     createTodo() {
-        this.backDropOpen()
+        this.props.toggleLoading()
         if (this.state.todoInput.trim() === '') {
-            this.setState({
-                isLoading: false
-            })
+            this.props.toggleLoading()
             return
         }
 
@@ -114,15 +112,12 @@ class MainPage extends React.Component {
         }).then(res => {
             this.setState({
                 todos: res.data,
-                isLoading: false,
                 todoInput: ''
             })
-
+            this.props.toggleLoading()
         }).catch(err => {
             console.log(err)
-            this.setState({
-                isLoading: false
-            })
+            this.props.toggleLoading()
         })
 
     }
@@ -130,18 +125,6 @@ class MainPage extends React.Component {
     todoInputHandler(event) {
         this.setState({
             todoInput: event.target.value
-        })
-    }
-
-    backDropClose() {
-        this.setState({
-            isLoding: false
-        })
-    }
-
-    backDropOpen() {
-        this.setState({
-            isLoading: true
         })
     }
 
@@ -157,7 +140,7 @@ class MainPage extends React.Component {
         return (
             <div>
                 <Loading
-                    value={this.state.isLoading}
+                    value={this.props.isLoading}
                 />
                 <PadBox>
                     <Grid item sm={4}>
@@ -195,4 +178,17 @@ class MainPage extends React.Component {
     }
 }
 
-export default MainPage
+const mapStateToProps = state => {
+    return {
+        isLoading: state.ui.is_loading
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+
+    return {
+        toggleLoading: () => dispatch(toggleLoading())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage)
