@@ -6,7 +6,7 @@ import {
     LOADING_TOGGLE
 } from '../constants'
 
-export const  toggleLoading = () => {
+export const toggleLoading = () => {
     return {
         type: LOADING_TOGGLE
     }

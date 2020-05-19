@@ -15,13 +15,16 @@ import { connect } from 'react-redux'
 import {
     toggleLoading
 } from '../store/actions/ui'
+import {
+    fetchTodoAsync,
+    fetchListAsync,
+    updateListIndex
+} from '../store/actions/main'
 
 class MainPage extends React.Component {
     constructor() {
         super()
         this.state = {
-            todos: [],
-            lists: [],
             listInput: "",
             todoInput: "",
             isLoading: false,
@@ -30,29 +33,8 @@ class MainPage extends React.Component {
     }
 
     componentDidMount() {
-        Axios({
-            method: 'GET',
-            url: 'https://candle-shiny-indigo.glitch.me/todo/lists'
-        }).then(res => {
-            this.setState({
-                lists: res.data,
-                currentListIndex: res.data[0]._id
-            })
-        }).catch(err => {
-            console.log(err)
-        })
-
-        Axios({
-            method: 'GET',
-            url: 'https://candle-shiny-indigo.glitch.me/todo/todos'
-        }).then(res => {
-            console.log(res.data)
-            this.setState({
-                todos: res.data
-            })
-        }).catch(err => {
-            console.log(err)
-        })
+        this.props.fetchLists() 
+        this.props.fetchTodos()
     }
 
     listInputHandler(event) {
@@ -129,10 +111,7 @@ class MainPage extends React.Component {
     }
 
     changeSelectedListItem(id) {
-        console.log(id)
-        this.setState({
-            currentListIndex: id
-        })
+        this.props.updateListIndex(id)
     }
 
 
@@ -145,8 +124,8 @@ class MainPage extends React.Component {
                 <PadBox>
                     <Grid item sm={4}>
                         <List
-                            items={this.state.lists}
-                            selectedItem={this.state.currentListIndex}
+                            items={this.props.lists}
+                            selectedItem={this.props.listIndex}
                             selectedItemHandler={(id) => { this.changeSelectedListItem(id) }}
                         />
                         <Hidden xsDown>
@@ -160,8 +139,8 @@ class MainPage extends React.Component {
                     </Grid>
                     <Grid item sm={8}>
                         <Todolist
-                            todos={this.state.todos}
-                            listId={this.state.currentListIndex}
+                            todos={this.props.todos}
+                            listId={this.props.listIndex}
                         />
 
                         <Input
@@ -180,14 +159,20 @@ class MainPage extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        isLoading: state.ui.is_loading
+        isLoading: state.ui.is_loading,
+        todos: state.main.todos,
+        lists: state.main.lists,
+        listIndex: state.main.currentListIndex
     }
 }
 
 const mapDispatchToProps = dispatch => {
 
     return {
-        toggleLoading: () => dispatch(toggleLoading())
+        toggleLoading: () => dispatch(toggleLoading()),
+        fetchTodos: () => dispatch(fetchTodoAsync()),
+        fetchLists: () => dispatch(fetchListAsync()),
+        updateListIndex: (id) => dispatch(updateListIndex(id))
     }
 }
 
