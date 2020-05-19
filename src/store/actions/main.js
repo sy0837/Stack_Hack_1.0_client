@@ -2,7 +2,7 @@ import {
     FETCH_TODOS,
     FETCH_LISTS,
     UPDATE_LIST_INDEX,
-    CREATE_TODO
+    CREATE_LIST
 } from '../constants'
 
 import {
@@ -35,9 +35,9 @@ export const updateListIndex = (data) => {
     }
 }
 
-const createTodo = (data) => {
+const createList = (data) => {
     return {
-        type: CREATE_TODO,
+        type: CREATE_LIST,
         payload: data
     }
 }
@@ -96,6 +96,27 @@ export const createTodoAsync = (listId, name) => {
         }).catch(err => {
             dispatch(fetchTodos(err))
             dispatch(toggleLoading())
+        })
+    }
+}
+
+export const createListAsync = (listName) => {
+    if (listName === '') {
+        return dispatch => { }
+    }
+    return dispatch => {
+        dispatch(toggleLoading())
+        Axios({
+            method: 'POST',
+            url: 'https://candle-shiny-indigo.glitch.me/todo/lists',
+            data: {
+                listName: listName
+            }
+        }).then(res => {
+            dispatch(createList(res.data))
+            dispatch(toggleLoading())
+        }).catch(err => {
+            console.log(err)
         })
     }
 }

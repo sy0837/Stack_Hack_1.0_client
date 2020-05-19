@@ -1,13 +1,16 @@
 import {
     FETCH_TODOS,
     FETCH_LISTS,
-    UPDATE_LIST_INDEX
+    UPDATE_LIST_INDEX,
+    CREATE_LIST
 } from '../constants'
 
 const initialState = {
     lists: [],
     todos: [],
-    currentListIndex: 0
+    currentListIndex: 0,
+    todoInput: '',
+    listInput: ''
 }
 
 export default (state = initialState, action) => {
@@ -29,6 +32,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 currentListIndex: action.payload
+            }
+        case CREATE_LIST:
+            return {
+                ...state,
+                lists: [...state.lists, action.payload]
             }
         default:
             return state

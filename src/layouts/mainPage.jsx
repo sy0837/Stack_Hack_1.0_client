@@ -1,6 +1,5 @@
 import React from 'react'
 import List from '../components/lists'
-import Axios from 'axios'
 import Todolist from '../components/todolist'
 import PadBox from '../components/todobox'
 import Input from '../components/input'
@@ -19,7 +18,8 @@ import {
     fetchTodoAsync,
     fetchListAsync,
     updateListIndex,
-    createTodoAsync
+    createTodoAsync,
+    createListAsync
 } from '../store/actions/main'
 
 class MainPage extends React.Component {
@@ -28,8 +28,6 @@ class MainPage extends React.Component {
         this.state = {
             listInput: "",
             todoInput: "",
-            isLoading: false,
-            currentListIndex: null
         }
     }
 
@@ -45,40 +43,10 @@ class MainPage extends React.Component {
     }
 
     addToList() {
-        this.props.toggleLoading()
-        let newList = this.state.lists
-        if (this.state.listInput.trim() === '') {
-            this.props.toggleLoading()
-            return;
-        }
-        Axios({
-            method: 'POST',
-            url: 'https://candle-shiny-indigo.glitch.me/todo/lists',
-            data: {
-                listName: this.state.listInput.trim()
-            }
-        }).then(res => {
-            newList.push(res.data)
-            console.log(newList)
-            this.setState({
-                lists: newList,
-                listInput: ""
-            })
-            this.props.toggleLoading()
-
-        }).catch(err => {
-            console.log(err)
-            this.props.toggleLoading()
-        })
-
+        this.props.createList(this.state.listInput.trim())
     }
 
     createTodo() {
-        // this.props.toggleLoading()
-        // if (this.state.todoInput.trim() === '') {
-        //     this.props.toggleLoading()
-        //     return
-        // }
 
         this.props.createTodo(this.props.listIndex, this.state.todoInput.trim())
 
@@ -148,7 +116,8 @@ const mapDispatchToProps = dispatch => {
         fetchTodos: () => dispatch(fetchTodoAsync()),
         fetchLists: () => dispatch(fetchListAsync()),
         updateListIndex: (id) => dispatch(updateListIndex(id)),
-        createTodo: (listId, name) => dispatch(createTodoAsync(listId, name))
+        createTodo: (listId, name) => dispatch(createTodoAsync(listId, name)),
+        createList: (listName) => dispatch(createListAsync(listName))
     }
 }
 
