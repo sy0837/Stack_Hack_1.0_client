@@ -4,7 +4,8 @@ import {
     UPDATE_LIST_INDEX,
     CREATE_LIST,
     UPDATE_LIST_INPUT,
-    UPDATE_TODO_INPUT
+    UPDATE_TODO_INPUT,
+    DELETE_TODO
 } from '../constants'
 
 import {
@@ -134,6 +135,31 @@ export const createListAsync = (listName) => {
             dispatch(toggleLoading())
         }).catch(err => {
             console.log(err)
+        })
+    }
+}
+
+export const deleteTodoAsync = (todoId) => {
+
+    return dispatch => {
+        dispatch(toggleLoading())
+        Axios({
+            method: 'DELETE',
+            url: 'https://candle-shiny-indigo.glitch.me/todo/todos',
+            data: {
+                todoId: todoId
+            }
+        }).then(()=>{
+            return Axios({
+                method: 'GET',
+                url: 'https://candle-shiny-indigo.glitch.me/todo/todos'
+            })
+        }).then(res=>{
+            dispatch(fetchTodos(res.data))
+            dispatch(toggleLoading())
+        }).catch(err=>{
+            console.log(err)
+            dispatch(toggleLoading())
         })
     }
 }
