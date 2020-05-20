@@ -64,30 +64,34 @@ class MainPage extends React.Component {
                     value={this.props.isLoading}
                 />
                 <PadBox>
-                    <Grid item sm={4}>
-                        <List
-                            items={this.props.lists}
-                            selectedItem={this.props.listIndex}
-                            selectedItemHandler={(id) => { this.props.updateListIndex(id) }}
-                        />
-                        <Hidden xsDown>
+                    <Grid item sm={2}>
+                    <Hidden xsDown>
                             <Input
-                                title="add list"
+                               title="Add Category"
                                 value={this.props.listInput}
                                 handler={(event) => { this.listInputHandler(event) }}
                                 btn={() => { this.addToList() }}
                             />
                         </Hidden>
+                        <List
+                            items={this.props.lists}
+                            selectedItem={this.props.listIndex}
+                            selectedItemHandler={(id) => { this.props.updateListIndex(id) }}
+                            btn={(id)=> {this.props.deleteTodo(id)}}
+                        />
+                        
                     </Grid>
-                    <Grid item sm={8}>
+                    <Grid item sm={10}>
                         <Todolist
                             todos={this.props.todos}
                             listId={this.props.listIndex}
                             btn={(id)=> {this.props.deleteTodo(id)}}
+
                         />
 
                         <Input
-                            title="add todo"
+                        title="Add Todo-Item"
+                            
                             value={this.props.todoInput}
                             handler={(event) => { this.todoInputHandler(event) }}
                             btn={() => { this.createTodo() }}
