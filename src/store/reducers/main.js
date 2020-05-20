@@ -4,7 +4,8 @@ import {
     UPDATE_LIST_INDEX,
     CREATE_LIST,
     UPDATE_LIST_INPUT,
-    UPDATE_TODO_INPUT
+    UPDATE_TODO_INPUT,
+    DELETE_TODO
 } from '../constants'
 
 const initialState = {
@@ -51,6 +52,12 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 todoInput: action.payload
+            }
+
+        case DELETE_TODO:
+            return {
+                ...state,
+                todos: action.payload
             }
         default:
             return state
