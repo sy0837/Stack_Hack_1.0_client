@@ -1,3 +1,15 @@
+/**
+ * For running async code inside our reducers 
+ * we need to use redux-thunk and also create 
+ * action creators inside that will return a action. 
+ */
+
+/**
+ * This file contains all the action creators, 
+ * About: Action creators are function that dispatch a action.
+ */
+
+
 import {
     FETCH_TODOS,
     FETCH_LISTS,
@@ -12,7 +24,10 @@ import {
 } from './ui'
 import Axios from 'axios'
 
-
+/**
+ * This action updates the todos state with the new
+ * payload value.
+ */
 const fetchTodos = (data) => {
     return {
         type: FETCH_TODOS,
@@ -20,6 +35,10 @@ const fetchTodos = (data) => {
     }
 }
 
+/**
+ * This action updates the lists and the 
+ * currentListIndex
+ */
 const fetchLists = (data, listIndex) => {
     return {
         type: FETCH_LISTS,
@@ -30,6 +49,9 @@ const fetchLists = (data, listIndex) => {
     }
 }
 
+/**
+ * Updates the list Index
+ */
 export const updateListIndex = (data) => {
     return {
         type: UPDATE_LIST_INDEX,
@@ -37,6 +59,9 @@ export const updateListIndex = (data) => {
     }
 }
 
+/**
+ * Creates a new list 
+ */
 const createList = (data) => {
     return {
         type: CREATE_LIST,
@@ -44,6 +69,9 @@ const createList = (data) => {
     }
 }
 
+/**
+ * updates the list input 
+ */
 export const updateListInput = (data) => {
     return {
         type: UPDATE_LIST_INPUT,
@@ -51,6 +79,9 @@ export const updateListInput = (data) => {
     }
 }
 
+/**
+ * updates to todo input
+ */
 export const updateTodoInput = (data) => {
     return {
         type: UPDATE_TODO_INPUT,
