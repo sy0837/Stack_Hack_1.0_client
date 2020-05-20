@@ -51,7 +51,7 @@ export default (props) => {
                                             className={classes.button}
                                             size="small"
                                             color="secondary"
-                                            onClick={props.btn}
+                                            onClick={()=> {props.btn(todo._id)}}
                                         >
                                             <Delete />
                                         </Fab>

@@ -4,8 +4,7 @@ import {
     UPDATE_LIST_INDEX,
     CREATE_LIST,
     UPDATE_LIST_INPUT,
-    UPDATE_TODO_INPUT,
-    DELETE_TODO
+    UPDATE_TODO_INPUT
 } from '../constants'
 
 import {
