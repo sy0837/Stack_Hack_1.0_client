@@ -137,3 +137,28 @@ export const createListAsync = (listName) => {
         })
     }
 }
+
+export const deleteTodoAsync = (todoId) => {
+
+    return dispatch => {
+        dispatch(toggleLoading())
+        Axios({
+            method: 'DELETE',
+            url: 'https://candle-shiny-indigo.glitch.me/todo/todos',
+            data: {
+                todoId: todoId
+            }
+        }).then(()=>{
+            return Axios({
+                method: 'GET',
+                url: 'https://candle-shiny-indigo.glitch.me/todo/todos'
+            })
+        }).then(res=>{
+            dispatch(fetchTodos(res.data))
+            dispatch(toggleLoading())
+        }).catch(err=>{
+            console.log(err)
+            dispatch(toggleLoading())
+        })
+    }
+}

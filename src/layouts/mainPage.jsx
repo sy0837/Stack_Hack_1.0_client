@@ -21,7 +21,8 @@ import {
     createTodoAsync,
     createListAsync,
     updateListInput,
-    updateTodoInput
+    updateTodoInput,
+    deleteTodoAsync
 } from '../store/actions/main'
 
 class MainPage extends React.Component {
@@ -82,6 +83,7 @@ class MainPage extends React.Component {
                         <Todolist
                             todos={this.props.todos}
                             listId={this.props.listIndex}
+                            btn={(id)=> {this.props.deleteTodo(id)}}
                         />
 
                         <Input
@@ -119,7 +121,8 @@ const mapDispatchToProps = dispatch => {
         createTodo: (listId, name) => dispatch(createTodoAsync(listId, name)),
         createList: (listName) => dispatch(createListAsync(listName)),
         updateListInput: (data) => dispatch(updateListInput(data)),
-        updateTodoInput: (data) => dispatch(updateTodoInput(data))
+        updateTodoInput: (data) => dispatch(updateTodoInput(data)),
+        deleteTodo: (id) => dispatch(deleteTodoAsync(id))
     }
 }
 
