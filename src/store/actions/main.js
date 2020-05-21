@@ -179,15 +179,42 @@ export const deleteTodoAsync = (todoId) => {
             data: {
                 todoId: todoId
             }
-        }).then(()=>{
+        }).then(() => {
             return Axios({
                 method: 'GET',
                 url: 'https://candle-shiny-indigo.glitch.me/todo/todos'
             })
-        }).then(res=>{
+        }).then(res => {
             dispatch(fetchTodos(res.data))
             dispatch(toggleLoading())
-        }).catch(err=>{
+        }).catch(err => {
+            console.log(err)
+            dispatch(toggleLoading())
+        })
+    }
+}
+
+export const deleteListAsync = (listId, name) => {
+    console.log(listId, name)
+    return dispatch => {
+        dispatch(toggleLoading())
+        Axios({
+            method: 'DELETE',
+            url: 'https://candle-shiny-indigo.glitch.me/todo/lists',
+            data: {
+                id: listId,
+                name: name
+            }
+        }).then((result) => {
+            console.log(result)
+            return Axios({
+                method: 'GET',
+                url: 'https://candle-shiny-indigo.glitch.me/todo/lists'
+            })
+        }).then(res => {
+            dispatch(fetchLists(res.data, res.data[0]._id))
+            dispatch(toggleLoading())
+        }).catch(err => {
             console.log(err)
             dispatch(toggleLoading())
         })
