@@ -18,7 +18,9 @@ import {connect} from 'react-redux'
 import {
     fetchListAsync,
     updateListIndex,
-    deleteListAsync
+    deleteListAsync,
+    updateListInput,
+    createListAsync
 } from '../store/actions/main'
 
 const useStyle = makeStyles(theme =>({
@@ -33,8 +35,19 @@ const useStyle = makeStyles(theme =>({
     }
 }))
 // #FF8E53
+
+
 const Navbar = (props) => {
     const classes = useStyle()
+
+    function listInputHandler(event) {
+        props.updateListInput(event.target.value)
+    }
+
+    function addToList() {
+        props.createList(props.listInput.trim())
+    }
+
     return (
         <div >
             <AppBar position="static" className={classes.root}>
@@ -48,7 +61,7 @@ const Navbar = (props) => {
 
             <Drawer
             anchor="left"
-            open={true}
+            open={false}
             >
 
             <Container>
@@ -61,6 +74,9 @@ const Navbar = (props) => {
 
             <Input
             title="Add Category"
+            value={props.listInput}
+            handler={(event) => { listInputHandler(event) }}
+            btn={() => { addToList() }}
             />
             </Container>
 
@@ -83,7 +99,9 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchLists: () => dispatch(fetchListAsync()),
         updateListIndex: (id) => dispatch(updateListIndex(id)),
-        deleteList: (id, name) => dispatch(deleteListAsync(id, name))
+        deleteList: (id, name) => dispatch(deleteListAsync(id, name)),
+        updateListInput: (data) => dispatch(updateListInput(data)),
+        createList: (listName) => dispatch(createListAsync(listName)),
     }
 }
 
