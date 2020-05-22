@@ -7,7 +7,6 @@ import Loading from '../components/loading'
 
 import {
     Grid,
-    Hidden
 } from '@material-ui/core'
 
 import { connect } from 'react-redux'
