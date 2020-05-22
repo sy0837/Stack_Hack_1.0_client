@@ -64,6 +64,7 @@ class MainPage extends React.Component {
                     value={this.props.isLoading}
                 />
                 <PadBox>
+
                     <Grid item xs={12} sm={3}>
                         {/* <Hidden xsDown> */}
                             <List
@@ -78,12 +79,14 @@ class MainPage extends React.Component {
                                 handler={(event) => { this.listInputHandler(event) }}
                                 btn={() => { this.addToList() }}
                             />
+
                         {/* </Hidden> */}
 
 
                     </Grid>
                     <Grid item xs={12} sm={9}>
                     
+
                         <Todolist
                             todos={this.props.todos}
                             listId={this.props.listIndex}

@@ -14,11 +14,13 @@ const userStyle = makeStyles(theme => ({
     root: {
         marginTop: theme.spacing(1),
         // boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+
     },
     main: {
         padding: theme.spacing(1.4),
         cursor: 'pointer',
         background: '#',
+
     },
     selected: {
         padding: theme.spacing(1.4),
@@ -32,17 +34,21 @@ const userStyle = makeStyles(theme => ({
         fontSize: '16'
     },
     paper: {
-        // boxShadow: ' 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+
+        boxShadow: ' 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+
         borderRadius: '20px',
         paddingTop: '16px',
         paddingLeft: '20px',
         paddingRight: '20px',
+
         paddingBottom: '16px',
         height : '400px',
         ['@media (max-width:780px)'] : {
             height : '150px'
         },
         overflow : 'auto' 
+
     },
     listItem: {
         borderBottom: 'solid 1px #bbb'
@@ -62,7 +68,9 @@ export default (props) => {
                         {props.items.map(item => {
                             return (
                                 <Grid container key={item._id} className={classes.listItem} >
+
                                     <Grid item xs={10} sm={8} md={10} lg={10} xl={10} className={classes.main}>
+
                                         <Typography
                                             className={(item._id === props.selectedItem) ? classes.selected : null}
                                             onClick={() => { props.selectedItemHandler(item._id) }}
@@ -70,7 +78,9 @@ export default (props) => {
                                             {item.list_name}
                                         </Typography>
                                     </Grid>
+
                                     <Grid item xs={2} sm={4} md={2} lg={2} xl={2} className={classes.main}>
+
                                         <Fab
                                             className={classes.button}
 

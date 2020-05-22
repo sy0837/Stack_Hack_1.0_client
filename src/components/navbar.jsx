@@ -3,8 +3,25 @@ import {
     makeStyles,
     AppBar,
     Toolbar,
-    Typography
+    Typography,
+    Drawer,
+    Container
 } from '@material-ui/core'
+
+import List from './lists'
+import Input from './input'
+
+import { Menu } from '@material-ui/icons'
+
+import {connect} from 'react-redux'
+
+import {
+    fetchListAsync,
+    updateListIndex,
+    deleteListAsync,
+    updateListInput,
+    createListAsync
+} from '../store/actions/main'
 
 const useStyle = makeStyles(theme =>({
     root: {
@@ -18,8 +35,19 @@ const useStyle = makeStyles(theme =>({
     }
 }))
 // #FF8E53
-export default () => {
+
+
+const Navbar = (props) => {
     const classes = useStyle()
+
+    function listInputHandler(event) {
+        props.updateListInput(event.target.value)
+    }
+
+    function addToList() {
+        props.createList(props.listInput.trim())
+    }
+
     return (
         <div >
             <AppBar position="static" className={classes.root}>
@@ -31,6 +59,50 @@ export default () => {
 
             </AppBar>
 
+            <Drawer
+            anchor="left"
+            open={false}
+            >
+
+            <Container>
+            <List
+            items={props.lists}
+            selectedItem={props.listIndex}
+            selectedItemHandler={(id) => { props.updateListIndex(id) }}
+            btn={(id, name) => {props.deleteList(id, name) }}
+            />
+
+            <Input
+            title="Add Category"
+            value={props.listInput}
+            handler={(event) => { listInputHandler(event) }}
+            btn={() => { addToList() }}
+            />
+            </Container>
+
+            </Drawer>
+
         </div>
     )
 }
+
+const mapStateToProps = state => {
+    return {
+        lists: state.main.lists,
+        listIndex: state.main.currentListIndex,
+        listInput: state.main.listInput,
+        isLoading: state.ui.is_loading,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchLists: () => dispatch(fetchListAsync()),
+        updateListIndex: (id) => dispatch(updateListIndex(id)),
+        deleteList: (id, name) => dispatch(deleteListAsync(id, name)),
+        updateListInput: (data) => dispatch(updateListInput(data)),
+        createList: (listName) => dispatch(createListAsync(listName)),
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Navbar)
